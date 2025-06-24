@@ -51,7 +51,7 @@ export class MySettingTab extends PluginSettingTab {
 				drop.onChange(async (value) => {
 					this.plugin.settings.dailyTemplatePath = value;
 					await this.plugin.saveSettings();
-					new Notice("template set to: ${value}");
+					new Notice(`template set to: ${value}`);
 				});
 			});
 		new Setting(containerEl)
@@ -66,8 +66,9 @@ export class MySettingTab extends PluginSettingTab {
 
 				drop.onChange(async (value) => {
 					this.plugin.settings.dailyTemplateFolder = value;
+					console.log(value);
 					await this.plugin.saveSettings();
-					new Notice("folder set to: ${value}");
+					new Notice(`folder set to: ${value}`);
 				});
 			});
 	}

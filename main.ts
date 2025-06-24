@@ -9,6 +9,8 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
+		console.log("test")
+
 		FileChanges(this, (file, date) => {
 			add_data_to_day_journal(this, file, date)
 		})

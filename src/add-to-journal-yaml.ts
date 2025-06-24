@@ -13,29 +13,46 @@ function file_name_with_extension(filename: string): string {
 	return filename.endsWith(".md") ? filename : filename + ".md";
 }
 
+function name_without_extention(name: string): string {
+	// console.log(name.replace(/\.md$/, ""));
+	return name.replace(/\.md$/, "");
+}
+
 export function insert_yaml(
 	source: string,
 	path: Record<string, string>,
 ): string {
-	// console.log(source, path);
+	console.log(path);
 	const lines = source.split("\n");
 
 	let front_yaml: string = "";
 
 	if (lines[0].trim() == "---") {
 		front_yaml = extractFrontmatter(source);
-		const parsed = yaml.load(front_yaml) as Record<string, any>;
+		// console.log("origianl yaml: ", front_yaml);
+		let parsed = yaml.load(front_yaml) as Record<string, any>;
 
+		// console.log("before parsed check", path["file-modified"]);
+
+		// We must ensure that the yaml attribute is an array before processing it
+		if (!Array.isArray(parsed["files-modified"])) {
+			parsed["files-modified"] = [];
+		}
+
+		// Safety check
 		if (parsed["files-modified"] instanceof Array) {
 			// console.log("correct yaml", parsed);
 			if (parsed["files-modified"] == null) {
 				parsed["files-modified"] = [];
 			}
-			parsed["files-modified"].push(`[[${path["file-modified"]}]]`);
+			parsed["files-modified"].push(
+				`[[${name_without_extention(path["file-modified"])}]]`,
+			);
 			// console.log("modified yaml", parsed);
 		}
 
 		const new_yaml = yaml.dump(parsed);
+		// console.log(new_yaml);
 
 		const updated_frontmatter = source.replace(
 			/^---\n([\s\S]*?)\n---/,
@@ -59,7 +76,7 @@ async function create_day_note(
 		template_path,
 	);
 
-	console.log(template);
+	// console.log(template);
 
 	if (!(template instanceof TFile)) {
 		new Notice("Template file not found please set in settings.");
@@ -96,10 +113,10 @@ export default async function add_data_to_day_journal(
 
 	const modified_file_name = file.name;
 
-	console.log(day_journal_name + ".md", modified_file_name);
+	// console.log(day_journal_name + ".md", modified_file_name);
 
 	if (file_name_with_extension(day_journal_name) == modified_file_name) {
-		console.log("naming conflict, avoid recurse");
+		// console.log("naming conflict, avoid recurse");
 		return;
 	}
 
@@ -125,14 +142,20 @@ export default async function add_data_to_day_journal(
 			note_file = new_note;
 		}
 	}
+	// console.log(note_file);
 
 	if (note_file != null) {
 		const day_note_content = await plugin.app.vault.read(note_file);
 		const modified_file_yaml = {
-			"file-modified": `[[${modified_file_name}]]`,
+			"file-modified": `${modified_file_name}`,
 		};
+		// console.log(modified_file_name, day_note_content);
 
 		const new_yaml = insert_yaml(day_note_content, modified_file_yaml);
+
+		// console.log("successfully edited YAML: ", new_yaml);
+
+		// console.log(await plugin.app.vault.read(note_file));
 
 		await plugin.app.vault.modify(note_file, new_yaml);
 	}
