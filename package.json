@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-changelog-journal",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"description": "This plugin adds modified notes to daily journal note and auto creates daily notes when obsidian is use from a template, ",
 	"main": "main.js",
 	"scripts": {

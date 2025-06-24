@@ -1,7 +1,7 @@
 {
 	"id": "changelog-plugin",
 	"name": "Changelog Journal Plugin",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"minAppVersion": "0.15.0",
 	"description": "This plugin adds modified notes to daily journal note and auto creates daily notes when obsidian is use from a template, ",
 	"author": "Finbar Cowan",

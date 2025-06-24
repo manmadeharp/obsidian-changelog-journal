@@ -22,7 +22,7 @@ export function insert_yaml(
 	source: string,
 	path: Record<string, string>,
 ): string {
-	console.log(path);
+	// console.log(path);
 	const lines = source.split("\n");
 
 	let front_yaml: string = "";
@@ -41,14 +41,13 @@ export function insert_yaml(
 
 		// Safety check
 		if (parsed["files-modified"] instanceof Array) {
-			// console.log("correct yaml", parsed);
+			const note = name_without_extention(path["file-modified"]);
 			if (parsed["files-modified"] == null) {
 				parsed["files-modified"] = [];
 			}
-			parsed["files-modified"].push(
-				`[[${name_without_extention(path["file-modified"])}]]`,
-			);
-			// console.log("modified yaml", parsed);
+			if (!parsed["files-modified"].includes(`[[${note}]]`)) {
+				parsed["files-modified"].push(`[[${note}]]`);
+			}
 		}
 
 		const new_yaml = yaml.dump(parsed);
