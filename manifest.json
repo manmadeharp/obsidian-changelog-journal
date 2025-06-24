@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "changelog-plugin",
+	"name": "Changelog Journal Plugin",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "This plugin adds modified notes to daily journal note and auto creates daily notes when obsidian is use from a template, ",
+	"author": "Finbar Cowan",
+	"authorUrl": "https://github.com/manmadeharp/obsidian-changelog-journal",
 	"isDesktopOnly": false
 }
